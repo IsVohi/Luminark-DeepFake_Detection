@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import './Analyze.css';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export default function Analyze() {
     const [file, setFile] = useState(null);
