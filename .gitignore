@@ -58,3 +58,5 @@ models/*.bin
 
 # Uploads
 uploads/
+frontend/node_modules/
+frontend/dist/
