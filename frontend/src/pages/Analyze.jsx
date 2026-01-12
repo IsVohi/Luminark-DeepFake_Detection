@@ -8,6 +8,7 @@ import {
 import './Analyze.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_KEY = import.meta.env.VITE_API_KEY || 'lum_test_key_12345';
 
 export default function Analyze() {
     const [file, setFile] = useState(null);
@@ -183,7 +184,7 @@ export default function Analyze() {
             // 1. Start Job
             const startRes = await fetch(`${API_URL}/analyze/start`, {
                 method: 'POST',
-                headers: { 'X-API-Key': 'lum_test_key_12345' },
+                headers: { 'X-API-Key': API_KEY },
                 body: formData,
             });
 
@@ -195,7 +196,9 @@ export default function Analyze() {
             // 2. Poll Status
             pollIntervalRef.current = setInterval(async () => {
                 try {
-                    const statusRes = await fetch(`${API_URL}/analyze/status/${job_id}`);
+                    const statusRes = await fetch(`${API_URL}/analyze/status/${job_id}`, {
+                        headers: { 'X-API-Key': API_KEY }
+                    });
                     if (!statusRes.ok) return;
 
                     const statusData = await statusRes.json();
@@ -232,7 +235,9 @@ export default function Analyze() {
 
     const fetchResult = async (id) => {
         try {
-            const res = await fetch(`${API_URL}/analyze/result/${id}`);
+            const res = await fetch(`${API_URL}/analyze/result/${id}`, {
+                headers: { 'X-API-Key': API_KEY }
+            });
             if (!res.ok) throw new Error('Failed to fetch results');
             const data = await res.json();
 
