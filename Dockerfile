@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     curl \
     git \
+    bzip2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Python dependencies
@@ -31,7 +32,12 @@ RUN pip install \
 # Application code
 COPY core/ /app/core/
 COPY backend/ /app/backend/
-COPY models/ /app/models/
+
+# Create models directory and download dlib predictor
+RUN mkdir -p /app/models && \
+    curl -L -o /app/models/shape_predictor_68_face_landmarks.dat \
+    "https://github.com/davisking/dlib-models/raw/master/shape_predictor_68_face_landmarks.dat.bz2" && \
+    bunzip2 /app/models/shape_predictor_68_face_landmarks.dat.bz2 || true
 
 # Environment
 ENV PYTHONPATH=/app
