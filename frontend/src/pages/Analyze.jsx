@@ -422,26 +422,6 @@ export default function Analyze() {
                                             <Loader className="spin" size={24} />
                                             <p className="sub-text">Please keep this window open</p>
                                         </div>
-
-                                        {/* Sponsor Banner */}
-                                        <div className="sponsor-banner">
-                                            <div className="sponsor-content">
-                                                <p className="sponsor-text">
-                                                    ⏳ Running on free-tier infrastructure. Analysis may take 1-2 minutes.
-                                                </p>
-                                                <p className="sponsor-subtext">
-                                                    Help us upgrade to faster servers with GPU acceleration!
-                                                </p>
-                                                <a
-                                                    href="https://github.com/sponsors/IsVohi"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="sponsor-btn"
-                                                >
-                                                    ❤️ Sponsor This Project
-                                                </a>
-                                            </div>
-                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -560,6 +540,28 @@ export default function Analyze() {
                         </AnimatePresence>
                     </div>
                 </div>
+
+                {/* Sponsor Banner - Always Visible */}
+                <motion.div
+                    className="sponsor-banner sponsor-banner-page"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                >
+                    <div className="sponsor-content">
+                        <p className="sponsor-text">
+                            ⚡ Running on free-tier infrastructure. Help us upgrade to faster GPU servers!
+                        </p>
+                        <a
+                            href="https://github.com/sponsors/IsVohi"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="sponsor-btn"
+                        >
+                            ❤️ Sponsor This Project
+                        </a>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );

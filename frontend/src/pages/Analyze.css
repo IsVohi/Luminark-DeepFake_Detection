@@ -831,6 +831,25 @@
     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
 }
 
+/* Page-level sponsor banner (always visible) */
+.sponsor-banner-page {
+    margin-top: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sponsor-banner-page .sponsor-content {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.sponsor-banner-page .sponsor-text {
+    margin: 0;
+}
+
 [data-theme='light'] .sponsor-banner {
     background: linear-gradient(135deg, rgba(236, 72, 153, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
     border-color: rgba(236, 72, 153, 0.2);
