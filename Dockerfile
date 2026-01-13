@@ -1,47 +1,53 @@
 # ============================================
 # Luminark Backend - Hugging Face Spaces
-# CPU-optimized Docker deployment
+# OPTIMIZED: Using pre-built PyTorch image
 # ============================================
 
-FROM python:3.10-slim
+# Use official PyTorch CPU image (much faster than installing from scratch)
+FROM pytorch/pytorch:2.1.2-cuda11.8-cudnn8-runtime
+
+# Switch to CPU-only mode in environment
+ENV CUDA_VISIBLE_DEVICES=""
+ENV MODEL_DEVICE=cpu
 
 WORKDIR /app
 
-# System dependencies
+# Install minimal system dependencies (skip OpenCV dev, use pip version)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    cmake \
-    libopencv-dev \
     ffmpeg \
     curl \
-    git \
     bzip2 \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Python dependencies
-COPY requirements/base.txt requirements.txt
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Install Python dependencies (minimal, skip what PyTorch image already has)
+RUN pip install --no-cache-dir \
+    fastapi==0.104.1 \
+    uvicorn[standard]==0.24.0 \
+    python-multipart==0.0.6 \
+    opencv-python-headless==4.8.1.78 \
+    numpy==1.26.2 \
+    Pillow==10.1.0 \
+    scipy==1.11.4 \
+    dlib==19.24.2 \
+    librosa==0.10.1 \
+    soundfile==0.12.1 \
+    transformers==4.36.0
 
-# PyTorch CPU-only
-RUN pip install \
-    torch==2.1.2 \
-    torchvision==0.16.2 \
-    torchaudio==2.1.2 \
-    --index-url https://download.pytorch.org/whl/cpu
-
-# Application code
+# Copy application code
 COPY core/ /app/core/
 COPY backend/ /app/backend/
 
-# Create models directory and download dlib predictor
+# Download dlib face predictor model
 RUN mkdir -p /app/models && \
-    curl -L -o /app/models/shape_predictor_68_face_landmarks.dat \
+    curl -L -o /app/models/shape_predictor.dat.bz2 \
     "https://github.com/davisking/dlib-models/raw/master/shape_predictor_68_face_landmarks.dat.bz2" && \
-    bunzip2 /app/models/shape_predictor_68_face_landmarks.dat.bz2 || true
+    bunzip2 /app/models/shape_predictor.dat.bz2 && \
+    mv /app/models/shape_predictor.dat /app/models/shape_predictor_68_face_landmarks.dat
 
 # Environment
 ENV PYTHONPATH=/app
-ENV MODEL_DEVICE=cpu
 ENV LUMINARK_API_KEYS=lum_prod_key_secure_2026
 
 # Hugging Face Spaces uses port 7860
@@ -51,5 +57,5 @@ EXPOSE 7860
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD curl -f http://localhost:7860/health || exit 1
 
-# Run on HF Spaces port
+# Run application
 CMD ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "7860"]

@@ -778,3 +778,68 @@
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid var(--border-subtle);
 }
+
+/* =========================================
+   Sponsor Banner Styles
+   ========================================= */
+
+.sponsor-banner {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.sponsor-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sponsor-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.sponsor-subtext {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    margin: 0 0 0.75rem 0;
+}
+
+.sponsor-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+}
+
+.sponsor-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+}
+
+[data-theme='light'] .sponsor-banner {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+    border-color: rgba(236, 72, 153, 0.2);
+}
+
+[data-theme='light'] .sponsor-text {
+    color: #6b7280;
+}
+
+[data-theme='light'] .sponsor-subtext {
+    color: #9ca3af;
+}
